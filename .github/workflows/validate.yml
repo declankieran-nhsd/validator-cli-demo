@@ -1,0 +1,33 @@
+name: Validation Example
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - uses: actions/checkout@v3
+  
+      - name: Download validator
+        run: wget https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar]
+
+      - name: Download IG
+        run: wget ${{ vars.IG_PACKAGE }} -O package.tgz
+
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Validation 
+        run: java -jar validator_cli.jar *.xml *.json -ig package.tgz -html-output validation.html
+
+      - name: Store Validation Output
+        uses: actions/upload-artifact@v3
+        with:
+          name: Validation Artefact
+          path: ./validation.html
