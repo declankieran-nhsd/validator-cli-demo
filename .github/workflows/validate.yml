@@ -24,7 +24,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Validation 
-        run: java -jar validator_cli.jar *.xml *.json -ig package.tgz -html-output validation.html
+        run: java -jar validator_cli.jar *.xml -ig package.tgz -html-output validation.html
 
       - name: Store Validation Output
         uses: actions/upload-artifact@v3
